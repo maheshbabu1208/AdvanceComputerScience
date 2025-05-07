@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      serviceAccountName: default  # Ensures pods use the default Kubernetes service account
+      containers:
+      - name: backend-service
+        image: gcr.io/ai-model-comparison-20250131/backend-service:latest
+        ports:
+        - containerPort: 3000
+        env:
+        - name: NODE_ENV
+          value: "production"
+        resources:
+          requests:
+            memory: "64Mi"  
+            cpu: "125m"      
+          limits:
+            memory: "128Mi"  
+            cpu: "250m"
